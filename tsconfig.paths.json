@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@models/*": ["src/models/*"],
+        "@controllers/*": ["src/controllers/*"],
+        "@routes/*": ["src/routes/*"],
+        "@constants/*": ["src/constants/*"],
+        "@config/*": ["src/config/*"],
+        "@helpers/*": ["src/helpers/*"],
+        "@jobs/*": ["src/jobs/*"]
+      }
+    }
+  }
+  
