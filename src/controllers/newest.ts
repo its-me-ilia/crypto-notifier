@@ -54,7 +54,17 @@ export default async (req: Request, res: Response) => {
                 console.log('Updating Cache');
                 //if first element is changed in new list, it means list is new and there is new coins
                 redisClient.set(REDIS_NEWEST_KEY, JSON.stringify(list));
-                let newCoins = list.filter(coin => !existingCoinList.find(e => e.coinId === coin.coinId)); //find non-present coins in existingCoinList and add them to newCoins array
+                //in order to not include last element in the new coins, since if array has fixed length (30), cmarketcap pushes element at the first rank and all the other coins have to go back by 1 rank, while 30-th element gets pushed out of array, and difference is first elements + last element since it is not included in new list as well
+                //let newCoins = list.filter(coin => !existingCoinList.find(e => e.coinId === coin.coinId)); //find non-present coins in existingCoinList and add them to newCoins array
+                let newCoins: Array<ICoinInfo> = [];
+                for(let newCoin of list){
+                    let isOld = existingCoinList.find(c => c.coinId === newCoin.coinId);
+                    if(isOld){
+                        break;
+                    }else{
+                        newCoins.push(newCoin);
+                    };
+                };
                 await sendNewlyAddedCoinUpdate(newCoins);
             };
         }
